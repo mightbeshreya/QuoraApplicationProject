@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.time.ZonedDateTime;
 
 @Repository
 public class UserDao {
@@ -61,5 +62,40 @@ public class UserDao {
             return null;
         }
     }
+    public UserEntity getUserByUUID(final String UUID) {
+        try {
+            return entityManager.createNamedQuery("userByUUID", UserEntity.class).setParameter("uuid", UUID).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    public void updateUserLogoutByToken(final String accessToken, final ZonedDateTime logoutAt) {
+        entityManager.createNamedQuery("updateLogoutByToken").setParameter("token", accessToken)
+                .setParameter("logoutAt", logoutAt).executeUpdate();
+
+    }
+
+    public void updateUserLogoutAt(final UserAuthTokenEntity updateUserLogoutAt) {
+        entityManager.merge(updateUserLogoutAt);
+    }
+
+    public UserEntity getUserById(final String uuid) {
+        try {
+            return entityManager.createNamedQuery("userByUUID", UserEntity.class).setParameter("uuid", uuid).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    //This method retrieves the user based on user uuid, if found returns user else null
+    public UserEntity getUserByUuid(final String uuid) {
+        try {
+            return entityManager.createNamedQuery("userByUUID", UserEntity.class).setParameter("uuid", uuid).getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
 }
 
