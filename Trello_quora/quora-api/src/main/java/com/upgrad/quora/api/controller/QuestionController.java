@@ -58,4 +58,32 @@ public class QuestionController {
 
     }
 
+
+    /* method - GET for getAllQuestions (gets all questions from DB)
+        Path mapped to - /question/all
+        produces JSON
+        Takes in Request header variable 'authorization'
+        with annotation RequestHeader
+        throws AuthorizationFailedException - when user is not signed in or when user is signed out (Authorization fails)
+    *  */
+    @RequestMapping(method = RequestMethod.GET, path = "/question/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestions
+    (@RequestHeader("authorization") final String authorization ) throws AuthorizationFailedException {
+        /* Getting the list of all questions from the Service and in turn DB */
+        List<QuestionEntity> listOfQuestions = questionBusinessService.getAllQuestions(authorization);
+        /* Initializing QuestionDetailsResponse as linkedlist and adding each QuestionDetailsResponse entity to it */
+        final List<QuestionDetailsResponse> questionDetailsResponses = new LinkedList<>() ;
+
+        /* Run a for loop to add each question retrieved from DB */
+        for(QuestionEntity q: listOfQuestions) {
+            /* Setting question details (UUID and content ) to questionDetailsResponse and
+            Adding in List of questionDetailsResponses  */
+            QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse();
+            questionDetailsResponse.setId(q.getUuid());
+            questionDetailsResponse.setContent(q.getContent());
+            questionDetailsResponses.add(questionDetailsResponse);
+        }
+        /* Returning list of  QuestionDetailsResponse */
+        return new ResponseEntity<List<QuestionDetailsResponse>>(questionDetailsResponses, HttpStatus.OK);
+    }
 }

@@ -21,4 +21,15 @@ public class QuestionDao {
         return questionEntity;
     }
 
+    /* List of already posted questions are retrieved from DB
+     * getResultList is used for retrieving lists
+     *  */
+    public List<QuestionEntity> getAllQuestions() {
+        try {
+            return entityManager.createNamedQuery("getAllQuestions" , QuestionEntity.class).getResultList();
+        }catch(NoResultException nre) {
+            return null;
+        }
+    }
+
 }

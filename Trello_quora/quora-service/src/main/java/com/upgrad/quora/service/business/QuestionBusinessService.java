@@ -42,4 +42,24 @@ public class QuestionBusinessService {
         questionEntity.setUser(userAuthTokenEntity.getUser());
         return questionDao.createQuestion(questionEntity);
     }
+
+    /*
+     * getAllQuestions function returns List of QuestionEntity objects from DB
+     * Takes in authorization (access token)
+     * Authorization (when user is signed out or if user has not signed in at all is performed here
+     * If no exception is thrown, all questions are retrieved from DB and returned
+     *
+     *  */
+    public List<QuestionEntity> getAllQuestions(final String authorization) throws AuthorizationFailedException{
+        UserAuthTokenEntity userAuthTokenEntity = userDao.getUserAuthToken(authorization);
+        if(userAuthTokenEntity==null) {
+            throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
+        }
+        if(userAuthTokenEntity.getLogoutAt()!=null) {
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out.Sign in first to get all questions");
+        }
+        List<QuestionEntity> listOfQuestions  = questionDao.getAllQuestions();
+        return listOfQuestions;
+    }
+
 }
