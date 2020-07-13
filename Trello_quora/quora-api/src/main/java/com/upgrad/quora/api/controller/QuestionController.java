@@ -1,19 +1,15 @@
 package com.upgrad.quora.api.controller;
 
-import com.upgrad.quora.api.model.QuestionDetailsResponse;
-import com.upgrad.quora.api.model.QuestionRequest;
-import com.upgrad.quora.api.model.QuestionResponse;
+import com.upgrad.quora.api.model.*;
 import com.upgrad.quora.service.business.QuestionBusinessService;
 import com.upgrad.quora.service.entity.QuestionEntity;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
+import com.upgrad.quora.service.exception.InvalidQuestionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
@@ -86,4 +82,31 @@ public class QuestionController {
         /* Returning list of  QuestionDetailsResponse */
         return new ResponseEntity<List<QuestionDetailsResponse>>(questionDetailsResponses, HttpStatus.OK);
     }
+    //**editQuestionContent**//
+    //This method only allows the owner of the question to edit a question
+    //To edit a question, this endpoint takes in the questionUuid, access token and the content to be updated from the editRequest.
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/question/edit/{questionId}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<QuestionEditResponse> editQuestionContent(@PathVariable("questionId") final String questionUuid, @RequestHeader("authorization") final String authorization, final QuestionEditRequest editRequest) throws AuthorizationFailedException, InvalidQuestionException {
+        QuestionEntity questionEntity;
+        QuestionEntity editedQuestion;
+        try {
+            String[] userToken = authorization.split("Bearer ");
+            questionEntity = questionBusinessService.getQuestion(questionUuid, userToken[1]);
+            questionEntity.setContent(editRequest.getContent());
+            editedQuestion = questionBusinessService.editQuestion(questionEntity, userToken[1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            questionEntity = questionBusinessService.getQuestion(questionUuid, authorization);
+            questionEntity.setContent(editRequest.getContent());
+            editedQuestion = questionBusinessService.editQuestion(questionEntity, authorization);
+        }
+
+        //In normal cases, updating an entity doesn't change the Uuid, meaning questionUuid==updatedUuid.
+        // However, we have implemented this feature in case the system later requires to keep track of the updates, for e.g. by adding a suffix after every update like Uuid-1,-2, etc.
+
+        String updatedUuid = editedQuestion.getUuid();
+        QuestionEditResponse questionEditResponse = new QuestionEditResponse().id(updatedUuid).status("QUESTION EDITED");
+        return new ResponseEntity<QuestionEditResponse>(questionEditResponse, HttpStatus.OK);
+    }
+
 }
