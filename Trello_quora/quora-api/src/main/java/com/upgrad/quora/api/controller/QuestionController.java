@@ -5,6 +5,7 @@ import com.upgrad.quora.service.business.QuestionBusinessService;
 import com.upgrad.quora.service.entity.QuestionEntity;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
+import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -64,14 +66,14 @@ public class QuestionController {
     *  */
     @RequestMapping(method = RequestMethod.GET, path = "/question/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestions
-    (@RequestHeader("authorization") final String authorization ) throws AuthorizationFailedException {
+    (@RequestHeader("authorization") final String authorization) throws AuthorizationFailedException {
         /* Getting the list of all questions from the Service and in turn DB */
         List<QuestionEntity> listOfQuestions = questionBusinessService.getAllQuestions(authorization);
         /* Initializing QuestionDetailsResponse as linkedlist and adding each QuestionDetailsResponse entity to it */
-        final List<QuestionDetailsResponse> questionDetailsResponses = new LinkedList<>() ;
+        final List<QuestionDetailsResponse> questionDetailsResponses = new LinkedList<>();
 
         /* Run a for loop to add each question retrieved from DB */
-        for(QuestionEntity q: listOfQuestions) {
+        for (QuestionEntity q : listOfQuestions) {
             /* Setting question details (UUID and content ) to questionDetailsResponse and
             Adding in List of questionDetailsResponses  */
             QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse();
@@ -128,5 +130,36 @@ public class QuestionController {
         return new ResponseEntity<QuestionDeleteResponse>(authorizedDeleteResponse, HttpStatus.OK);
 
     }
+
+    //**getAllQuestionsByUser**//
+    //This method returns all the questions posted by user as a list and can be accessed by an user.
+    @RequestMapping(method = RequestMethod.GET, path = "question/all/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<QuestionDetailsResponse>> getAllQuestionByUser(@RequestHeader("authorization") final String authorization, @PathVariable("userId") final String userUuid)
+            throws AuthorizationFailedException, UserNotFoundException {
+        List<QuestionEntity> listOfUserQuestions = new ArrayList<>();
+        try {
+            String[] bearerAccessToken = authorization.split("Bearer");
+            listOfUserQuestions = questionBusinessService.getAllQuestionsByUser(bearerAccessToken[1], userUuid);
+        } catch (Exception e) {
+            listOfUserQuestions = questionBusinessService.getAllQuestionsByUser(authorization, userUuid);
+        }
+        /**
+         ListIterator<QuestionEntity> questions = listOfUserQuestions.listIterator();
+         List<QuestionDetailsResponse> displayQuestionIdAndContent = new ArrayList<>();
+         while(questions.hasNext()){
+         QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse().id(questions.next().getUuid()).content(questions.next().getContent());
+         displayQuestionIdAndContent.add(questionDetailsResponse);}
+         **/
+
+        List<QuestionDetailsResponse> displayUserQuestionIdAndContent = new ArrayList<>();
+        for (QuestionEntity que : listOfUserQuestions) {
+            QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse().id(que.getUuid()).
+                    content(que.getContent());
+
+            displayUserQuestionIdAndContent.add(questionDetailsResponse);
+        }
+        return new ResponseEntity<List<QuestionDetailsResponse>>(displayUserQuestionIdAndContent, HttpStatus.OK);
+    }
+
 
 }
