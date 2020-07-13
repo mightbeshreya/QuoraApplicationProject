@@ -24,4 +24,12 @@ public class AnswerDao {
             return null;
         }
     }
+    public AnswerEntity updateAnswer(AnswerEntity answerEntity) {
+        return entityManager.merge(answerEntity);
+    }
+
+    public AnswerEntity deleteAnswer(AnswerEntity answerEntity) {
+        entityManager.remove(answerEntity);
+        return answerEntity;
+    }
 }
