@@ -1,12 +1,19 @@
 package com.upgrad.quora.service.business;
 
+import com.upgrad.quora.service.common.GenericErrorCode;
+import com.upgrad.quora.service.common.UnexpectedException;
 import com.upgrad.quora.service.dao.UserDao;
+import com.upgrad.quora.service.entity.UserAuthTokenEntity;
 import com.upgrad.quora.service.entity.UserEntity;
+import com.upgrad.quora.service.exception.AuthenticationFailedException;
 import com.upgrad.quora.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Service
 public class UserBusinessService {
@@ -35,4 +42,39 @@ public class UserBusinessService {
 
         return signUpUser;
     }
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserAuthTokenEntity signin(final String username, final String password) throws AuthenticationFailedException {
+        UserEntity userEntity = userDao.getUserByUserName(username);
+        try {
+            if (userEntity == null) {
+                throw new AuthenticationFailedException("ATHR-001", "This username does not exist");
+            }
+
+            final String encryptedPassword = passwordCryptographyProvider.encrypt(password, userEntity.getSalt());
+            if (encryptedPassword.equals(userEntity.getPassword())) {
+                JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(encryptedPassword);
+                UserAuthTokenEntity userAuthEntity = new UserAuthTokenEntity();
+
+                final ZonedDateTime now = ZonedDateTime.now();
+                final ZonedDateTime expiresAt = now.plusHours(8);
+
+                userAuthEntity.setUuid(UUID.randomUUID().toString());
+                userAuthEntity.setUser(userEntity);
+                userAuthEntity.setAccessToken(jwtTokenProvider.generateToken(userEntity.getUuid(), now, expiresAt));
+                userAuthEntity.setExpiresAt(expiresAt);
+                userAuthEntity.setLoginAt(now);
+
+                userDao.createAuthToken(userAuthEntity);
+
+                return userAuthEntity;
+            } else {
+                throw new AuthenticationFailedException("ATH-002", "Password failed");
+            }
+
+        } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException ex) {
+            GenericErrorCode genericErrorCode = GenericErrorCode.GEN_001;
+            throw new UnexpectedException(genericErrorCode, ex);
+        }
+    }
+
 }
