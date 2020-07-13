@@ -10,8 +10,11 @@
       <root url="jar://$PROJECT_DIR$/lib/javax.resource.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javax.servlet.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javax.servlet.jsp.jstl.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../../../../apache-maven-3.6.3" />
+      <root url="jar://$PROJECT_DIR$/../../../../../../postgresql-42.2.14 (1).jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../../../apache-maven-3.6.3" recursive="false" />
   </library>
 </component>
