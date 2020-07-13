@@ -5,11 +5,13 @@ import com.upgrad.quora.service.dao.UserDao;
 import com.upgrad.quora.service.entity.QuestionEntity;
 import com.upgrad.quora.service.entity.UserAuthTokenEntity;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
+import com.upgrad.quora.service.exception.InvalidQuestionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /* Service annotation - It is used to mark the class as a service provider, is a specialization of @Component annotation */
@@ -61,5 +63,38 @@ public class QuestionBusinessService {
         List<QuestionEntity> listOfQuestions  = questionDao.getAllQuestions();
         return listOfQuestions;
     }
+    @Transactional(propagation = Propagation.REQUIRED)
+    public QuestionEntity editQuestion(final QuestionEntity questionEntity, final String accessToken) throws AuthorizationFailedException {
+        UserAuthTokenEntity userAuthToken = userDao.getUserAuthToken(accessToken);
+        if (userAuthToken == null) {
+            throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
+        }
+        ZonedDateTime logoutTime = userAuthToken.getLogoutAt();
+        if (logoutTime != null) {
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out.Sign in first to edit the question");
+        }
+        String questionOwnerUuid = questionEntity.getUser().getUuid();
+        String signedInUserUuid = userAuthToken.getUser().getUuid();
+
+        if (questionOwnerUuid.equals(signedInUserUuid)) {
+            QuestionEntity updatedQuestion = questionDao.updateQuestion(questionEntity);
+            return updatedQuestion;
+        } else {
+            throw new AuthorizationFailedException("ATHR-003", "Only the question owner can edit the question");
+        }
+    }
+    //This method retrieves the question in the database
+    public QuestionEntity getQuestion(final String questionUuid, final String accessToken) throws InvalidQuestionException {
+
+        QuestionEntity questionEntity = questionDao.getQuestionByUuid(questionUuid);
+        if (questionEntity == null) {
+            throw new InvalidQuestionException("QUES-001", "Entered question uuid does not exist");
+        }
+        return questionEntity;
+
+    }
+
+
+
 
 }

@@ -20,7 +20,9 @@ import java.time.ZonedDateTime;
 /* Named Queries */
 @NamedQueries({
         @NamedQuery(name = "getAllQuestions", query = "select q from QuestionEntity q"),
-        @NamedQuery(name = "getQuestionById", query = "select q from QuestionEntity q where q.uuid = :questionId")
+        @NamedQuery(name = "getQuestionById", query = "select q from QuestionEntity q where q.uuid = :questionId"),
+        @NamedQuery(name = "QuestionByUUID", query = "select q from QuestionEntity q where q.uuid = :uuid")
+
 })
 public class QuestionEntity implements Serializable {
 
