@@ -46,6 +46,18 @@ public class QuestionDao {
             return null;
         }
 
-
+    }
+    //This method deletes the question record from database
+    public void deleteQuestion(final QuestionEntity questionEntity) {
+        entityManager.remove(questionEntity);
+    }
+    //This method retrieves all the questions posted by a user and returns null if the list is empty.
+    public List<QuestionEntity> getAllQuestionsByUser(final String userUuid){
+        try{
+            return entityManager.createNamedQuery("AllQuestionsByUser", QuestionEntity.class).setParameter("uuid",userUuid).getResultList();
+        }
+        catch (NoResultException nre){
+            return null;
+        }
     }
 }
