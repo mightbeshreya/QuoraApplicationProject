@@ -109,4 +109,24 @@ public class QuestionController {
         return new ResponseEntity<QuestionEditResponse>(questionEditResponse, HttpStatus.OK);
     }
 
+    //**deleteQuestion**//
+    //The admin or the owner of the Question has a privilege of deleting the question
+    //This endpoint requests for the questionUuid to be deleted and the questionowner or admin accesstoken in the authorization header
+    @RequestMapping(method = RequestMethod.DELETE, path = "/question/delete/{questionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<QuestionDeleteResponse> deleteQuestion(@PathVariable("questionId") final String questionIdUuid, @RequestHeader("authorization") final String authorization)
+            throws AuthorizationFailedException, InvalidQuestionException {
+        String uuid;
+        try {
+            String[] accessToken = authorization.split("Bearer");
+            uuid = questionBusinessService.deleteQuestion(questionIdUuid, accessToken[1]);
+        } catch (ArrayIndexOutOfBoundsException are) {
+            uuid = questionBusinessService.deleteQuestion(questionIdUuid, authorization);
+        }
+
+        QuestionDeleteResponse authorizedDeleteResponse = new QuestionDeleteResponse().id(uuid).status("QUESTION DELETED");
+        //This method returns an object of QuestionDeleteResponse and HttpStatus
+        return new ResponseEntity<QuestionDeleteResponse>(authorizedDeleteResponse, HttpStatus.OK);
+
+    }
+
 }
