@@ -91,6 +91,33 @@ public class AnswerController {
         AnswerDeleteResponse authorizedDeletedResponse = new AnswerDeleteResponse().id(uuid).status("ANSWER DELETED");
         return new ResponseEntity<AnswerDeleteResponse>(authorizedDeletedResponse, HttpStatus.OK);
     }
+    @RequestMapping(method = RequestMethod.GET, path = "answer/all/{questionId}",  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<AnswerDetailsResponse>> getAllAnswersToQuestion(@PathVariable("questionId") final String questionId, @RequestHeader("authorization") final String authorization)
+            throws AuthorizationFailedException, InvalidQuestionException {
+
+        //UserAuthTokenEntity userAuthEntity = userBusinessService.getUser(authorization);
+        ArrayList<AnswerEntity> andList;
+        ArrayList<AnswerDetailsResponse> list = new ArrayList<>();
+        try{
+            String[] accessToken = authorization.split("Bearer ");
+            andList = (ArrayList) ansBusinessService.getAllAnswers(questionId ,accessToken[1]);
+        } catch (ArrayIndexOutOfBoundsException are) {
+            andList = (ArrayList) ansBusinessService.getAllAnswers(questionId ,authorization);
+        }
+
+        QuestionEntity questionEntity = questionDao.getQuestionByUuid(questionId);
+        for(AnswerEntity ans : andList)
+        {
+            AnswerDetailsResponse detailsResponse = new AnswerDetailsResponse();
+            detailsResponse.setId(ans.getUuid());
+            detailsResponse.setAnswerContent(ans.getAns());
+            detailsResponse.setQuestionContent(questionEntity.getContent());
+            list.add(detailsResponse);
+        }
+
+        return new ResponseEntity<List<AnswerDetailsResponse>>(list, HttpStatus.OK);
+
+    }
 
 }
 

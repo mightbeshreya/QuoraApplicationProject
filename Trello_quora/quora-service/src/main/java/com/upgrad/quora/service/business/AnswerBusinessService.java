@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -102,6 +103,21 @@ public class AnswerBusinessService {
             throw new AuthorizationFailedException("ATHR-003", "Only the answer owner or admin can delete the answer");
         }
         return answerUuid;
+    }
+    public List<AnswerEntity> getAllAnswers(String questionId, final String accessToken) throws AuthorizationFailedException, InvalidQuestionException {
+        UserAuthTokenEntity userAuthToken = userDao.getUserAuthToken(accessToken);
+        if (userAuthToken == null) {
+            throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
+        }
+        ZonedDateTime logoutTime = userAuthToken.getLogoutAt();
+        if (logoutTime != null) {
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out.Sign in first to get the answers");
+        }
+        QuestionEntity questionEntity = questionDao.getQuestionByUuid(questionId);
+        if (questionEntity == null) {
+            throw new InvalidQuestionException("QUES-001", "The question with entered uuid whose details are to be seen does not exist");
+        }
+        return answerDao.getAllAnswers(questionId);
     }
 
 
