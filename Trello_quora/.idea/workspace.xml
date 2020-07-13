@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="47a15d9d-c79e-46a9-bbbf-df38ac55657d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quora-api/src/main/java/com/upgrad/quora/api/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/quora-api/src/main/java/com/upgrad/quora/api/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quora-api/target/classes/com/upgrad/quora/api/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/quora-api/target/classes/com/upgrad/quora/api/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quora-service/src/main/java/com/upgrad/quora/service/business/UserBusinessService.java" beforeDir="false" afterPath="$PROJECT_DIR$/quora-service/src/main/java/com/upgrad/quora/service/business/UserBusinessService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quora-service/src/main/java/com/upgrad/quora/service/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/quora-service/src/main/java/com/upgrad/quora/service/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quora-service/target/classes/com/upgrad/quora/service/business/UserBusinessService.class" beforeDir="false" afterPath="$PROJECT_DIR$/quora-service/target/classes/com/upgrad/quora/service/business/UserBusinessService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quora-service/target/classes/com/upgrad/quora/service/dao/UserDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/quora-service/target/classes/com/upgrad/quora/service/dao/UserDao.class" afterDir="false" />
-    </list>
+    <list default="true" id="47a15d9d-c79e-46a9-bbbf-df38ac55657d" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -188,38 +180,6 @@
     </task>
     <servers />
   </component>
-  <component name="TestHistory">
-    <history-entry file="CommonControllerTest - 2018.10.03 at 12h 11m 38s.xml">
-      <configuration name="CommonControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="QuestionControllerTest - 2018.10.03 at 12h 11m 56s.xml">
-      <configuration name="QuestionControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserControllerTest - 2018.10.03 at 12h 12m 15s.xml">
-      <configuration name="UserControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AdminControllerTest - 2018.10.03 at 12h 12m 42s.xml">
-      <configuration name="AdminControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AnswerControllerTest - 2018.10.03 at 12h 13m 06s.xml">
-      <configuration name="AnswerControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="CommonControllerTest - 2018.10.03 at 12h 13m 24s.xml">
-      <configuration name="CommonControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="QuestionControllerTest - 2018.10.03 at 12h 13m 42s.xml">
-      <configuration name="QuestionControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserControllerTest - 2018.10.03 at 12h 14m 03s.xml">
-      <configuration name="UserControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UserControllerTest - 2018.10.03 at 12h 34m 07s.xml">
-      <configuration name="UserControllerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="AnswerControllerTest - 2018.10.03 at 12h 36m 56s.xml">
-      <configuration name="AnswerControllerTest" configurationId="JUnit" />
-    </history-entry>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
@@ -228,22 +188,38 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="348" y="82" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1594641297047" />
-    <state width="1237" height="319" key="GridCell.Tab.0.bottom" timestamp="1594641581304">
+    <state width="1237" height="319" key="GridCell.Tab.0.bottom" timestamp="1594642854418">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="319" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594641581304" />
-    <state width="1237" height="319" key="GridCell.Tab.0.center" timestamp="1594641581304">
+    <state width="1237" height="319" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
+    <state width="1237" height="319" key="GridCell.Tab.0.center" timestamp="1594642854418">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="319" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594641581304" />
-    <state width="1237" height="319" key="GridCell.Tab.0.left" timestamp="1594641581303">
+    <state width="1237" height="319" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
+    <state width="1237" height="319" key="GridCell.Tab.0.left" timestamp="1594642854418">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="319" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594641581303" />
-    <state width="1237" height="319" key="GridCell.Tab.0.right" timestamp="1594641581304">
+    <state width="1237" height="319" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
+    <state width="1237" height="319" key="GridCell.Tab.0.right" timestamp="1594642854418">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1237" height="319" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594641581304" />
+    <state width="1237" height="319" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
+    <state width="1237" height="319" key="GridCell.Tab.1.bottom" timestamp="1594642854418">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="319" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
+    <state width="1237" height="319" key="GridCell.Tab.1.center" timestamp="1594642854418">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="319" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
+    <state width="1237" height="319" key="GridCell.Tab.1.left" timestamp="1594642854418">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="319" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
+    <state width="1237" height="319" key="GridCell.Tab.1.right" timestamp="1594642854418">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="1237" height="319" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1594642854418" />
     <state x="121" y="0" key="SettingsEditor" timestamp="1594641299110">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
